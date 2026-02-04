@@ -4,12 +4,20 @@ This is a FastAPI backend for the HRMS Lite application, converted from Node.js/
 
 ## Setup
 
-1. Install Python dependencies:
+1. Create and activate a virtual environment (recommended on Windows to avoid global package/version conflicts):
+```powershell
+cd server
+py -3.11 -m venv .venv
+.\.venv\Scripts\Activate.ps1
+python -m pip install -U pip
+```
+
+2. Install Python dependencies:
 ```bash
 pip install -r requirements.txt
 ```
 
-2. Set environment variables:
+3. Set environment variables:
 
 **For MongoDB with authentication:**
 ```bash
@@ -31,7 +39,13 @@ export PORT=5000
 
 **Note:** If you're getting authentication errors, make sure your MongoDB URI includes credentials in the format: `mongodb://username:password@host:port/database`
 
-3. Run the server:
+PowerShell equivalents:
+```powershell
+$env:MONGODB_URI="mongodb://localhost:27017/hrms_lite"
+$env:PORT="5000"
+```
+
+4. Run the server:
 ```bash
 python main.py
 ```

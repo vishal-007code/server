@@ -20,6 +20,13 @@ class Attendance(Document):
     @field_validator("date", mode="before")
     @classmethod
     def normalize_date(cls, v):
+        if isinstance(v, str):
+            # Accept "YYYY-MM-DD" for compatibility with API/UI payloads and responses.
+            try:
+                parsed = date.fromisoformat(v)
+                return datetime.combine(parsed, time.min)
+            except ValueError:
+                return v
         if isinstance(v, date) and not isinstance(v, datetime):
             return datetime.combine(v, time.min)
         return v
@@ -27,7 +34,11 @@ class Attendance(Document):
     class Settings:
         name = "attendances"
         indexes = [
-            IndexModel([("employeeId", 1), ("date", 1)], unique=True),
+            IndexModel(
+                [("employeeId", 1), ("date", 1)],
+                unique=True,
+                name="employeeId_1_date_1",
+            ),
         ]
 
     class Config:

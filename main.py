@@ -2,7 +2,7 @@ import os
 from fastapi import FastAPI, HTTPException
 from fastapi.middleware.cors import CORSMiddleware
 from contextlib import asynccontextmanager
-from database import init_db, close_db, get_db_status
+from database import init_db, close_db, get_db_status, get_last_db_error
 from routers import employees, attendance, auth
 
 PORT = int(os.getenv("PORT", 5000))
@@ -54,7 +54,8 @@ async def health_check():
     return {
         "status": "OK",
         "message": "Server is running",
-        "database": "Connected" if db_status else "Disconnected"
+        "database": "Connected" if db_status else "Disconnected",
+        "databaseError": None if db_status else get_last_db_error(),
     }
 
 
