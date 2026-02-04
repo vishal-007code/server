@@ -1,6 +1,7 @@
 import os
 from beanie import init_beanie
 from motor.motor_asyncio import AsyncIOMotorClient
+import certifi
 
 from models.employee import Employee
 from models.attendance import Attendance
@@ -56,7 +57,7 @@ async def init_db():
     global client, database, last_db_error
 
     try:
-        client = AsyncIOMotorClient(MONGODB_URI,tls=True,tlsAllowInvalidCertificates=True)
+        client = AsyncIOMotorClient(MONGODB_URI,tls=True,tlsCAFile=certifi.where(),serverSelectionTimeoutMS=30000)
         database = client[DATABASE_NAME]
 
         await client.admin.command("ping")

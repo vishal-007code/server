@@ -1,6 +1,8 @@
 import asyncio
 import sys
 import os
+import certifi
+
 
 sys.path.append(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 
@@ -20,7 +22,7 @@ DATABASE_NAME = os.getenv("MONGODB_DB", "hrms_lite")
 
 async def add_users():
     try:
-        client = AsyncIOMotorClient(MONGODB_URI,tls=True,tlsAllowInvalidCertificates=True)
+        client = AsyncIOMotorClient(MONGODB_URI,tls=True,tlsCAFile=certifi.where(),serverSelectionTimeoutMS=30000)
         database = client[DATABASE_NAME]
 
         await init_beanie(database=database, document_models=[User])

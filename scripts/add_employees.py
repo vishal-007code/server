@@ -1,6 +1,8 @@
 import asyncio
 import sys
 import os
+import certifi
+
 
 from motor.motor_asyncio import AsyncIOMotorClient
 from beanie import init_beanie
@@ -18,7 +20,7 @@ DATABASE_NAME = os.getenv("MONGODB_DB", "hrms_lite")
 
 async def add_employees():
     try:
-        client = AsyncIOMotorClient(MONGODB_URI,tls=True,tlsAllowInvalidCertificates=True)
+        client = AsyncIOMotorClient(MONGODB_URI,tls=True,tlsCAFile=certifi.where(),serverSelectionTimeoutMS=30000)
         database = client[DATABASE_NAME]
 
         await init_beanie(database=database, document_models=[Employee])
