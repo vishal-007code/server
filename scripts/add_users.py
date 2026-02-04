@@ -20,7 +20,7 @@ DATABASE_NAME = os.getenv("MONGODB_DB", "hrms_lite")
 
 async def add_users():
     try:
-        client = AsyncIOMotorClient(MONGODB_URI)
+        client = AsyncIOMotorClient(MONGODB_URI,tls=True,tlsAllowInvalidCertificates=True)
         database = client[DATABASE_NAME]
 
         await init_beanie(database=database, document_models=[User])

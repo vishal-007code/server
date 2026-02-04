@@ -56,7 +56,7 @@ async def init_db():
     global client, database, last_db_error
 
     try:
-        client = AsyncIOMotorClient(MONGODB_URI)
+        client = AsyncIOMotorClient(MONGODB_URI,tls=True,tlsAllowInvalidCertificates=True)
         database = client[DATABASE_NAME]
 
         await client.admin.command("ping")
